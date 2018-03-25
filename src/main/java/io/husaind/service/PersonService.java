@@ -6,6 +6,7 @@ import io.husaind.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,16 @@ public class PersonService {
 
     public List<Person> findAll() {
         return Mapper.toDto(personRepository.findAll());
+    }
+
+    public Person save(@Valid Person person) {
+        return null; //TODO add implementation
+    }
+
+    public void delete(Long personId) {
+//        Person person = personService.findById(personId)
+//                .orElseThrow(() -> new ResourceNotFoundException("Person", "id", personId));
+        //TODO add implementation
     }
 
     static class Mapper {
