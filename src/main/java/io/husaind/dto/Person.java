@@ -1,14 +1,18 @@
 package io.husaind.dto;
 
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Data
-@Builder
-public class Person {
+//@Builder TODO ideally use builder but Jackson requires NoArgsConstructor
+@NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Person implements Serializable {
     @Min(1)
     private Long id;
 

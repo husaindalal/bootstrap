@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,8 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
-@RequestMapping("/persons")
+@RequestMapping(value = "/persons", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+
 public class PersonController {
 
     private PersonService personService;
@@ -36,7 +38,7 @@ public class PersonController {
     }
 
     // Create a new Person
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Person create(@Valid @RequestBody Person person) {
         return personService.save(person);
     }
