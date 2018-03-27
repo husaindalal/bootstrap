@@ -32,17 +32,24 @@ class PersonResourceSpec extends Specification {
         def createdPerson = restTemplate.postForObject(BASE_URL, person, Person.class)
 
         then: "should return success result"
-        logger.debug("" + createdPerson.id)
+        logger.debug("Created Person" + createdPerson.id)
 
         createdPerson.id != null
         createdPerson.firstName == person.firstName
         createdPerson.lastName == person.lastName
 
-//        when: "find the person just created"
-//        Person foundPerson = restTemplate.getForObject(BASE_URL+"/"+createdPerson.id, Person.class)
-//        then:
-//        foundPerson.firstName == createdPerson.firstName
-//        foundPerson.lastName == createdPerson.lastName
+        when: "find the person just created"
+        Person foundPerson = restTemplate.getForObject(BASE_URL + "/" + createdPerson.id, Person.class)
+        then:
+        foundPerson.firstName == person.firstName
+        foundPerson.lastName == person.lastName
+
+        when: "Delete person"
+        restTemplate.delete(BASE_URL + "/" + createdPerson.id)
+        Person foundAfterDeletePerson = restTemplate.getForObject(BASE_URL + "/" + createdPerson.id, Person.class)
+
+        then:
+        foundAfterDeletePerson == null || foundAfterDeletePerson.id == null
 
     }
 

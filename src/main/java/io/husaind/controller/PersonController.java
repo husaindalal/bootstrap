@@ -1,6 +1,7 @@
 package io.husaind.controller;
 
 import io.husaind.dto.Person;
+import io.husaind.exception.CustomException;
 import io.husaind.service.PersonService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -13,9 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/persons", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/persons")
 
 public class PersonController {
 
@@ -28,13 +30,24 @@ public class PersonController {
 
     @GetMapping
     @ApiOperation(
-            value = "Find all persons"
+            value = "Find all persons. Used for testing only should not be exposed in production"
     )
     @ApiResponses({
             @ApiResponse(code = 200, message = "Showing all people found")
     })
     public List<Person> findAll() {
         return personService.findAll();
+    }
+
+    @GetMapping(value = "/{id}")
+    public Person findById(@PathVariable(value = "id") Long personId) {
+
+        Optional<Person> person = personService.findById(personId);
+        if (person.isPresent()) {
+            return person.get();
+        }
+
+        throw new CustomException("Person with id " + personId + " is not present"); //Compiler will optimize the string concatenation
     }
 
     // Create a new Person
